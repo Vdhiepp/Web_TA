@@ -1,0 +1,192 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  transform: scale(1.5);  /* Phóng to */
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+textarea {
+  height:500px;
+  resize: vertical;
+  background: #fff;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 13pt;
+}
+
+textarea .highlight {
+  font-weight: bold;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  margin-right: 40px; /* <-- thêm dòng này để giãn từng khối */
+}
+
+.counter button {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.counter button:hover {
+  background-color: #0056b3;
+}
+
+.counter span {
+  min-width: 30px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  column-gap: 40px;  /* Tăng khoảng cách ngang */
+}
+
+.generate-btn {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.generate-btn:hover {
+  background-color: #1e7e34;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Ô lưu ý cố định bên phải màn hình */
+.note-box {
+  position: fixed;       /* cố định màn hình */
+  top: 50px;             /* cách trên 50px */
+  right: 20px;           /* cách phải 20px */
+  width: 250px;
+  padding: 15px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-size: 14px;
+  z-index: 9999;
+}
+
+.note-box h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #dc3545;
+}
+
+.note-box button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.note-box button:hover {
+  background-color: #c82333;
+}
+
+.note-box-left {
+  position: fixed;       /* cố định màn hình */
+  top: 50px;             /* cách trên 50px */
+  left: 20px;           /* cách phải 20px */
+  width: 250px;
+  padding: 15px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-size: 14px;
+  z-index: 9999;
+}
+
+.note-box-left h3 {
+  margin-top: 0;
+  font-size: 16px;
+  color: #28a745;
+}
+
+.preset-prices {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.preset-prices button {
+  padding: 6px 12px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.preset-prices button:hover {
+  background-color: #138496;
+}
+
+mark {
+  background-color: yellow;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 3px;
+}

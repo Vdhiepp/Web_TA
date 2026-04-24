@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Nga</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h3>Trang chủ</h3>
+        <ul>
+            <li><a href="/NGA2/index.html" class="button">Nga</a></li>
+            <li><a href="/NOI_DIA/taVN.html" class="button">Nội địa</a></li>
+            <li><a href="/NOI_BO/content/noibo.html" class="button">Nội bộ</a></li>
+            <li><a href="#" class="button">Marketing Highland</a></li>
+        </ul>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container">
+
+        <!-- LEFT SIDE -->
+        <div class="left">
+
+            <!-- OPTIONS -->
+            <div class="option-box">
+                <h2>Chọn một lựa chọn</h2>
+                <select id="optionSelect">
+                    <option value="">-- Chọn --</option>
+                    <option value="1">Anex</option>
+                    <option value="2">I1BBOD - Alotment</option>
+                    <option value="3">HBBBFS - HardBlock</option>
+                    <option value="4">Rustar</option>
+                </select>
+
+                <button onclick="traCuu()">Tra cứu</button>
+            </div>
+
+            <!-- MAIN TABLE -->
+            <div class="main-table" id="mainTable">
+                <h3>Kết quả</h3>
+                <p>Vui lòng chọn option và nhấn "Tra cứu"</p>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="right">
+            <h3>Bảng phụ thu</h3><br>
+            <h4>HBBBFS - ICBB</h4>
+            <ul>
+                <li>+ 01 SC(315,000 VN te/n) + 01 UGEBC(210,000 VND r/n)</li>
+                <li>+ 01 EBA(1,035,000 VND r/n)</li>
+            </ul>
+            <br><h4>I1BBOD - ICBB</h4>
+            <ul>
+                <li>+ 01 SC(378,000 VND te/n) + 01 UGEBC(252,000 VND r/n)</li>
+                <li>+ 01 EBA(1,242,000 VND r/n)</li>
+            </ul>
+            <br><h4>Package with VinWonders - ICBV</h4>
+            <ul>
+                <li>VAP 7 nights:  <b>VAP7D-AN</b></li>
+                <li>xx pax VinWonders (330,000 VND/pax/night) * xx nigths</li>
+                <li>VAP 2 nights:  <b>VAP2D-LH23-D10</b></li>
+                <li>xx pax VinWonders (522,000 VND/pax/night) * xx nigths</li>
+                <li>VAP 1 night:  <b>VAP1D-LH23-D10</b></li>
+                <li>xx pax VinWonders (675,000 VND/pax/night) on xx/xx/2026</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

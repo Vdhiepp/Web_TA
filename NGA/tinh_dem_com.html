@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tính đêm COM</title>
+<style>
+    body {
+        font-family: Arial;
+        padding: 20px;
+        background: #f5f5f5;
+    }
+
+    textarea {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        border: none;
+        background: #dc3545;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    th {
+        background: #333;
+        color: white;
+    }
+
+    .highlight {
+        background: #ffeeba;
+    }
+</style>
+</head>
+<body>
+
+<h2>Tính đêm COM</h2>
+
+<textarea id="inputText" placeholder="Paste dữ liệu multi-line..."></textarea>
+<br>
+<button onclick="processData()">Xử lý</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Rate Code</th>
+            <th>Room Type</th>
+            <th>Occupancy</th>
+            <th>Room Revenue</th>
+            <th>Packages</th>
+            <th>Total</th>
+            <th>Extra Packages</th>
+            <th>Total Amount</th>
+        </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+</table>
+
+<script>
+function processData() {
+    const input = document.getElementById("inputText").value;
+
+    const lines = input
+        .split(/\r?\n/)
+        .map(l => l.trim())
+        .filter(l => l !== "");
+
+    const RECORD_SIZE = 9;
+    let records = [];
+
+    // 1. Parse thành object
+    for (let i = 0; i < lines.length; i += RECORD_SIZE) {
+        const chunk = lines.slice(i, i + RECORD_SIZE);
+        if (chunk.length < RECORD_SIZE) continue;
+
+        records.push({
+            date: chunk[0],
+            rateCode: chunk[1],
+            roomType: chunk[2],
+            occupancy: chunk[3],
+            roomRevenue: chunk[4],
+            packages: chunk[5],
+            total: chunk[6],
+            extraPackages: chunk[7],
+            totalAmount: chunk[8]
+        });
+    }
+
+    // 2. Xác định số dòng cần chỉnh
+    let adjustCount = 0;
+    const n = records.length;
+
+    if (n >= 20) adjustCount = 4;
+    else if (n >= 17) adjustCount = 3;
+    else if (n >= 10) adjustCount = 2;
+    else if (n >= 7) adjustCount = 1;
+
+    // 3. Sort theo Total Amount tăng dần
+    const sorted = [...records].sort((a, b) => {
+        const getValue = v => parseInt(v.replace(/[^\d]/g, "")) || 0;
+        return getValue(a.totalAmount) - getValue(b.totalAmount);
+    });
+
+    // 4. Lấy các dòng cần chỉnh
+    const selected = sorted.slice(0, adjustCount);
+
+    // 5. Apply rule
+    records = records.map(r => {
+        const isSelected = selected.includes(r);
+
+        if (isSelected) {
+            return {
+                ...r,
+                rateCode: "ICBB",
+                packages: "- " + r.packages,
+                total: "--",
+                totalAmount: "--",
+                highlight: true
+            };
+        }
+        return r;
+    });
+
+    // 6. Render table
+    const tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+
+    records.forEach(r => {
+        const row = `
+            <tr class="${r.highlight ? 'highlight' : ''}">
+                <td>${r.date}</td>
+                <td>${r.rateCode}</td>
+                <td>${r.roomType}</td>
+                <td>${r.occupancy}</td>
+                <td>${r.roomRevenue}</td>
+                <td>${r.packages}</td>
+                <td>${r.total}</td>
+                <td>${r.extraPackages}</td>
+                <td>${r.totalAmount}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+</script>
+
+</body>
+</html>

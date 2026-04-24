@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>MH</title>
+    <link rel="stylesheet" href="mh.css">
+    <link rel="stylesheet" href="/NGA2/style.css">
+
+</head>
+<body>
+    <div class="header">
+        <h3>Trang chủ</h3>
+        <ul>
+            <li><a href="/NGA2/index.html" class="button">Nga</a></li>
+            <li><a href="/NOI_DIA/taVN.html" class="button">Nội địa</a></li>
+            <li><a href="/NOI_BO/document.html" class="button">Nội bộ</a></li>
+            <li><a href="/MH/mh.html" class="button">Marketing Highland</a></li>
+        </ul>
+    </div>
+    <div class="btn-wrap">
+      <a href="index.html">
+        <button type="button">Back</button>
+      </a>
+    </div>
+    <h2>MH - chỉ dành cho Hardblock</h2>
+
+    <label>Số booking:</label>
+    <input type="text" id="bookingId">
+
+    <label>Tiền phòng (VND):</label>
+    <input type="number" id="roomPrice" min="0">
+
+    <div class="preset-prices">
+        <button type="button" data-price="1250000">1,250,000 VND</button>
+        <button type="button" data-price="1775000">1,775,000 VND</button>
+    </div>
+
+    <div class="row">
+        <label>Số phòng:</label>
+        <div class="counter">
+            <button onclick="changeValue('roomQty', -1)">-</button>
+            <span id="roomQty">1</span>
+            <button onclick="changeValue('roomQty', 1)">+</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <label>Số ngày:</label>
+        <div class="counter">
+            <button onclick="changeValue('dayQty', -1)">-</button>
+            <span id="dayQty">1</span>
+            <button onclick="changeValue('dayQty', 1)">+</button>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <label>SC:</label>
+        <div class="counter">
+            <button onclick="changeValue('scQty', -1)">-</button>
+            <span id="scQty">0</span>
+            <button onclick="changeValue('scQty', 1)">+</button>
+        </div>
+
+        <label>EBC:</label>
+        <div class="counter">
+            <button onclick="changeValue('ebcQty', -1)">-</button>
+            <span id="ebcQty">0</span>
+            <button onclick="changeValue('ebcQty', 1)">+</button>
+        </div>
+
+        <label>EBA:</label>
+        <div class="counter">
+            <button onclick="changeValue('ebaQty', -1)">-</button>
+            <span id="ebaQty">0</span>
+            <button onclick="changeValue('ebaQty', 1)">+</button>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <label>Early Check In:</label>
+        <div class="counter">
+            <button onclick="changeValue('earlyQty', -1)">-</button>
+            <span id="earlyQty">0</span>
+            <button onclick="changeValue('earlyQty', 1)">+</button>
+        </div>
+
+        <label>Late Check Out:</label>
+        <div class="counter">
+            <button onclick="changeValue('lateQty', -1)">-</button>
+            <span id="lateQty">0</span>
+            <button onclick="changeValue('lateQty', 1)">+</button>
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+        <label>FREE Upgrade:</label>
+        <label><input type="checkbox" id="upgradeTwin"> Twin Studio Ocean View</label>
+        <label><input type="checkbox" id="upgradeKing"> King Studio Ocean View</label>
+    </div>
+
+    <br>
+    <label><input type="checkbox" id="lunchToggle"> Bữa trưa</label>
+    <div id="lunchOptions" class="hidden">
+        <label>Ngày bữa trưa (ví dụ: 08JUL hoặc 08 AUG):</label>
+        <input type="text" id="lunchDate">
+
+        <div class="row">
+            <label>Trẻ em:</label>
+            <div class="counter">
+                <button onclick="changeValue('childQty', -1)">-</button>
+                <span id="childQty">0</span>
+                <button onclick="changeValue('childQty', 1)">+</button>
+            </div>
+
+            <label>Người lớn:</label>
+            <div class="counter">
+                <button onclick="changeValue('adultQty', -1)">-</button>
+                <span id="adultQty">0</span>
+                <button onclick="changeValue('adultQty', 1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <button class="generate-btn" onclick="generateMessage()">Create</button>
+    
+    <div class="note-box">
+        <h3>LƯU Ý:</h3>
+        <p><b>**FREE UPGRADE:</b></p>
+        <p>Cài Special Request:</p> 
+        <p><mark>Upgrade required</mark></p>
+        <hr>
+        <p><b>**Ăn trưa:</b></p>
+        <p>Cài rate: <mark>HBHLMH</mark></span></p>
+        <hr>
+        <p><b>**Ăn trưa ĐÊM GIỮA:</b></p>
+        <p>Cài thêm package: <mark>LN-A-IN-Pr11111</mark></p>
+        <button id="cleanBtn">Clean</button>
+    </div>
+
+    <div id="noteBoxLeft" class="note-box-left">
+        <h3>LƯU Ý</h3>
+        <p><b>***Người lớn thứ 3:</b></p>
+        <p>Cài giường phụ: <mark>Extrabed</mark></p>
+        <hr>
+        <p><b>***Giường phụ trẻ em (add 01EBC):</b></p>
+        <p>*Cài giường phụ: <mark>Extrabed</mark></p>
+        <p>*Cài fixed charges: </p>
+        <p><b>-B1: </b>Transaction Code: <mark>1004</mark>- Phu thu giuong phu TE(TA)</p>
+        <p><b>-B2: </b>Frequency: <mark>Daily</mark></p>
+        <p><b>-B3: </b>Amount: <mark>200,000</mark> per day</p>
+        <p><b>-B4: </b>References: <mark>UG EBC</mark></p>
+        <p><b>-B5: </b>Post</p>
+        <hr>
+        <p><b>***Phụ thu ăn trưa NL / TE:</b></p>
+        <p>Cài fixed charges: </p>
+        <p><b>-B1: </b>Transaction Code: <mark>2030</mark>- Coral An (M) / Coral Food (M)</p>
+        <p><b>-B2: </b>Frequency: <mark>Departure</mark></p>
+        <p><b>-B3.1: </b>Amount: <mark>175,000</mark> (đối với TE)</p>
+        <p><b>-B3.2: </b>Amount: <mark>350,000</mark> (đối với NL)</p>
+        <p><b>-B4: </b>Post</p>
+    </div>
+
+    <h3>Kết quả:</h3>
+    <textarea id="resultText" readonly></textarea>
+
+    <script src="mh.js"></script>
+</body>
+</html>
