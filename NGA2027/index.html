@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selection Demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; 
+      padding: 20px; 
+      min-height: 100vh;
+      background: #fff; 
+      font-family: Arial, Helvetica, sans-serif; 
+      color: #111;
+      overflow-x: hidden;
+    }
+    .app {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* Menu Selection trên cùng */
+    .selection-menu {
+      display: grid; 
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px; 
+      margin-bottom: 8px;
+    }
+    .selection-option {
+      min-height: 48px; 
+      border: 1px solid #a0c4f0; 
+      border-radius: 10px;
+      background: #bce0fd; 
+      padding: 10px; 
+      font-weight: 700;
+      cursor: pointer; 
+      font-size: 14px; 
+      transition: all .15s;
+    }
+    .selection-option:hover { background: #a6d4fc; }
+    .selection-option.active {
+      background: #6cb0f6; 
+      border: 2px solid #2874cf;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.45);
+    }
+
+    .current-label { 
+      margin: 4px 0 20px; 
+      color: #666; 
+      font-size: 13px; 
+    }
+
+    .screen-result { display: none; position: relative; }
+    .screen-result.active { display: block; }
+
+    /* Nút code chọn phía trên */
+    .top-actions {
+      display: flex; 
+      gap: 15px; 
+      margin-left: 120px;
+      margin-bottom: 25px;
+    }
+    .code-button {
+      min-width: 110px; 
+      padding: 8px 16px; 
+      border: 1px solid #777;
+      border-radius: 12px; 
+      background: #d4e8fd; 
+      font-weight: 700;
+      cursor: pointer; 
+      font-size: 13px;
+    }
+    .code-button.active { 
+      background: #555; 
+      color: #fff; 
+      border-color: #333; 
+    }
+
+    /* Bố cục chứa nội dung và nút mũi tên 2 bên */
+    .main-content-layout {
+      position: relative;
+      padding: 0 120px;
+    }
+
+    /* Nút mũi tên Cao điểm / Thấp điểm hình tròn */
+    .season-nav-btn {
+      position: absolute;
+      top: 35%;
+      transform: translateY(-50%);
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #cbd3dc;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #111;
+      transition: background 0.2s, transform 0.2s;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .season-nav-btn:hover {
+      background: #b5c1ce;
+      transform: translateY(-50%) scale(1.05);
+    }
+    .season-nav-btn.btn-left { left: 0; }
+    .season-nav-btn.btn-right { right: 0; }
+
+    .arrow-icon {
+      width: 0; 
+      height: 0; 
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
+    .arrow-icon.left { border-right: 18px solid #000; }
+    .arrow-icon.right { border-left: 18px solid #000; }
+
+    /* Hiệu ứng chuyển tiếp mượt cho 6 ô text */
+    .boxes-wrapper {
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .boxes-wrapper.fade-out-left {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    .boxes-wrapper.fade-out-right {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    /* Tiêu đề 3 cột City, Ocean, Front */
+    .column-headers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .column-headers h2 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    /* Bố cục hàng theo số đêm */
+    .section-row {
+      margin-bottom: 25px;
+    }
+    .row-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .row-boxes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    /* Khung thẻ chứa ô Text và nút Copy bên dưới */
+    .box-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Khung chứa nội dung Text */
+    .text-box {
+      min-height: 160px; 
+      padding: 16px; 
+      border-radius: 20px;
+      background: #cbd3dc; 
+      white-space: pre-wrap; 
+      overflow-wrap: anywhere;
+      line-height: 1.5; 
+      font-size: 14px;
+      color: #222;
+      flex: 1;
+    }
+
+    /* Nút Copy nằm dưới bên ngoài mỗi ô text */
+    .copy-btn {
+      align-self: flex-center;
+      margin: 0 auto;
+      padding: 6px 18px;
+      border: 1px solid #777;
+      border-radius: 8px;
+      background: #e2e8f0;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: #cbd5e1;
+    }
+    .copy-btn.copied {
+      background: #4ade80;
+      color: #064e3b;
+      border-color: #22c55e;
+    }
+
+    /* Nút Clean phía dưới */
+    .bottom-actions { 
+      display: flex; 
+      justify-content: center; 
+      margin-top: 30px; 
+    }
+    .clean-button {
+      min-width: 110px; 
+      padding: 8px 24px; 
+      border: 1px solid #777;
+      border-radius: 10px; 
+      background: #d4e8fd; 
+      font-weight: 700; 
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .main-content-layout { padding: 0; }
+      .season-nav-btn {
+        position: relative;
+        top: 0;
+        transform: none;
+        margin: 15px auto;
+      }
+      .selection-menu { grid-template-columns: repeat(2, 1fr); }
+      .row-boxes, .column-headers { grid-template-columns: 1fr; gap: 15px; }
+      .top-actions { margin-left: 0; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <!-- Menu Selection trên cùng -->
+    <section class="selection-area">
+      <div id="selectionMenu" class="selection-menu" aria-label="Danh sách selection"></div>
+      <p id="selectionHint" class="current-label">Chọn 1 trong 5 Selection để mở nội dung tương ứng.</p>
+    </section>
+
+    <!-- Màn hình kết quả -->
+    <section id="resultScreen" class="screen-result">
+      <div id="codeButtons" class="top-actions"></div>
+
+      <div class="main-content-layout">
+        <!-- Nút chuyển về Thấp điểm (hiển thị ở trang Cao điểm) -->
+        <button id="btnThapDiem" class="season-nav-btn btn-left" type="button" style="display: none;">
+          <span>Thấp điểm</span>
+          <div class="arrow-icon left"></div>
+        </button>
+
+        <!-- Nút chuyển sang Cao điểm (hiển thị ở trang Thấp điểm) -->
+        <button id="btnCaoDiem" class="season-nav-btn btn-right" type="button">
+          <span>Cao điểm</span>
+          <div class="arrow-icon right"></div>
+        </button>
+
+        <!-- Khung chứa 6 ô text và các nút copy bên dưới -->
+        <div id="boxesWrapper" class="boxes-wrapper">
+          <div class="column-headers">
+            <h2>City</h2>
+            <h2>Ocean</h2>
+            <h2>Front</h2>
+          </div>
+
+          <!-- Hàng 1: dưới 10 đêm -->
+          <div class="section-row">
+            <div class="row-title">dưới 10 đêm</div>
+            <div class="row-boxes">
+              <div class="box-card">
+                <div id="under10_city" class="text-box"></div>
+                <button class="copy-btn" type="button" onclick="copyBoxText('under10_city', this)">Copy</button>
+              </div>
+              <div class="box-card">
+                <div id="under10_ocean" class="text-box"></div>
+                <button class="copy-btn" type="button" onclick="copyBoxText('under10_ocean', this)">Copy</button>
+              </div>
+              <div class="box-card">
+                <div id="under10_front" class="text-box"></div>
+                <button class="copy-btn" type="button" onclick="copyBoxText('under10_front', this)">Copy</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hàng 2: từ 10 đêm trở lên -->
+          <div class="section-row">
+            <div class="row-title">từ 10 đêm trở lên</div>
+            <div class="row-boxes">
+              <div class="box-card">
+                <div id="over10_city" class="text-box"></div>
+                <button class="copy-btn" type="button" onclick="copyBoxText('over10_city', this)">Copy</button>
+              </div>
+              <div class="box-card">
+                <div id="over10_ocean" class="text-box"></div>
+                <button class="copy-btn" type="button" onclick="copyBoxText('over10_ocean', this)">Copy</button>
+              </div>
+              <div class="box-card">
+                <div id="over10_front" class="text-box"></div>
+                <button class="copy-btn" type="button" onclick="copyBoxText('over10_front', this)">Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nút Clean -->
+      <div class="bottom-actions">
+        <button id="cleanButton" class="clean-button" type="button">Clean</button>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
